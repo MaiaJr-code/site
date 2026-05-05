@@ -1,3 +1,4 @@
+// Interação do menu responsivo e scroll suave
 const menuToggle = document.querySelector('.menu-toggle');
 const navMenu = document.querySelector('.main-nav');
 const navLinks = document.querySelectorAll('.main-nav a');
@@ -5,19 +6,19 @@ const contactForm = document.getElementById('contactForm');
 const formFeedback = document.querySelector('.form-feedback');
 
 menuToggle.addEventListener('click', () => {
-  const expanded = navMenu.classList.toggle('open');
-  menuToggle.setAttribute('aria-expanded', expanded);
+  navMenu.classList.toggle('open');
+  menuToggle.setAttribute('aria-expanded', navMenu.classList.contains('open'));
 });
 
 navLinks.forEach(link => {
   link.addEventListener('click', () => {
     if (navMenu.classList.contains('open')) {
       navMenu.classList.remove('open');
-      menuToggle.setAttribute('aria-expanded', 'false');
     }
   });
 });
 
+// Validação simples do formulário
 contactForm.addEventListener('submit', event => {
   event.preventDefault();
   const name = contactForm.name.value.trim();
@@ -38,13 +39,17 @@ contactForm.addEventListener('submit', event => {
   contactForm.reset();
 });
 
+// Suave fade-in ao scroll para seções
 const animatedSections = document.querySelectorAll('.section, .hero-section');
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-    }
-  });
-}, { threshold: 0.15 });
+const observer = new IntersectionObserver(
+  entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  },
+  { threshold: 0.15 }
+);
 
 animatedSections.forEach(section => observer.observe(section));
